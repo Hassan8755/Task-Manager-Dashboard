@@ -26,13 +26,9 @@ body{
 }
 #register_home_page{
     background-color: #81CACF;
-    top: 20vh;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-top: 8px;
-    height: 60vh;
-    width: 25vw;
+    border-radius: 10px;
  
+    padding: 20px;
 
 
 }
@@ -57,14 +53,15 @@ body{
   background-color: #D4F6CC;
   color: rgb(247, 247, 247);
 }
-#left_sidebar{
+/* #left_sidebar{
     margin-top: 10px;
 
     display: inline-block;
     
-}
+} */
 #left_sidebar table tr{
-    background-color: #0096FF;
+    /* background-color: #0096FF; */
+    background-color: #D4F6CC;
     color: white;
     font-size: 18px;
     padding-bottom: 2px;

@@ -1,38 +1,7 @@
 {%extends 'admin/base.html' %}
 
 {% block content %}
-    <!-- <h4>Instruction for Admin</h4>
-      <ul style="line-height: 3em; font-size: 1.2em; list-style-type:none;">
-        <li>1. All the employees should mark their attendance daily</li>
-        <li>2. Every must complete the task assigned to them</li>
-        <li>3. Kindly maintain decorum of the office</li>
-        <li>4. Keep office and your area neat and clean</li>
-        <li>3. Kindly maintain decorum of the office</li>
-        <li>4. Keep office and your area neat and clean</li>
-      </ul> -->
-
- 
-    <!-- <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .container { margin-top: 50px; }
-        .box { display: inline-block; width: 250px; padding: 20px; margin: 10px; background: #f4f4f4; border-radius: 10px; }
-    </style> -->
-
-    <!-- <h1>Admin Dashboard</h1>
-    <div class="container">
-        <div class="box">
-            <h2>Total Users</h2>
-           
-        </div>
-        <div class="box">
-            <h2>Total Tasks</h2>
-           
-        </div>
-        <div class="box">
-            <h2>Total Leave Applications</h2>
-        
-        </div>
-    </div> -->
+   
 
 
     <div>
@@ -41,7 +10,7 @@
             <!-- Category Card -->
             <div class="col-md-4 col-lg-4 col-xxl-2">
               <div class="card card-primary card_element">
-                  <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                  <button class="view-more-btn" onclick="location.href='create_task'">View More <i class="bi bi-arrow-right-short"></i></button>
                   <div class="icon"><i class="bi bi-collection-fill"></i></div>
                   <div class="row">
                     <div class="col-10"><h3>Task Assigned</h3></div>
@@ -56,7 +25,7 @@
             <!-- Category Card -->
             <div class="col-md-4 col-lg-4 col-xxl-2">
                 <div class="card card-primary card_element">
-                    <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                    <button class="view-more-btn" onclick="location.href='manage_task'">View More <i class="bi bi-arrow-right-short"></i></button>
                     <div class="icon"><i class="bi bi-collection-fill"></i></div>
                     <div class="row">
                       <div class="col-10"><h3>Completed Task</h3></div>
@@ -72,7 +41,7 @@
             <!-- Category Card -->
             <div class="col-md-4 col-lg-4 col-xxl-2">
               <div class="card card-primary card_element">
-                  <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                  <button class="view-more-btn" onclick="location.href='manage_task'">View More <i class="bi bi-arrow-right-short"></i></button>
                   <div class="icon"><i class="bi bi-collection-fill"></i></div>
                   <div class="row">
                     <div class="col-10"><h3>Pending </h3></div>
@@ -91,7 +60,7 @@
             <!-- Category Card -->
             <div class="col-md-4 col-lg-4 col-xxl-2">
                 <div class="card card-primary card_element">
-                    <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                    <button class="view-more-btn" onclick="location.href='view_leave'">View More <i class="bi bi-arrow-right-short"></i></button>
                     <div class="icon"><i class="bi bi-collection-fill"></i></div>
                     <div class="row">
                       <div class="col-10"><h3>Total application</h3></div>
@@ -107,7 +76,7 @@
             <!-- Category Card -->
             <div class="col-md-4 col-lg-4 col-xxl-2">
               <div class="card card-primary card_element">
-                  <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                  <button class="view-more-btn" onclick="location.href='view_leave'">View More <i class="bi bi-arrow-right-short"></i></button>
                   <div class="icon"><i class="bi bi-collection-fill"></i></div>
                   <div class="row">
                     <div class="col-10"><h3>Approved</h3></div>
@@ -123,7 +92,7 @@
             <!-- Category Card -->
             <div class="col-md-4 col-lg-4 col-xxl-2">
               <div class="card card-primary card_element">
-                  <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                  <button class="view-more-btn" onclick="location.href='view_leave'">View More <i class="bi bi-arrow-right-short"></i></button>
                   <div class="icon"><i class="bi bi-collection-fill"></i></div>
                   <div class="row">
                     <div class="col-10"><h3>Rejected</h3></div>
@@ -141,7 +110,7 @@
     <div class="row">
             <div class="col-md-4 col-lg-4 col-xxl-2">
               <div class="card card-primary card_element">
-                  <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                  <button class="view-more-btn" onclick="location.href='user_list'">View More <i class="bi bi-arrow-right-short"></i></button>
                   <div class="icon"><i class="bi bi-collection-fill"></i></div>
                   <div class="row">
                     <div class="col-10"><h3>Total users</h3></div>
@@ -156,7 +125,7 @@
     
             <div class="col-md-4 col-lg-4 col-xxl-2">
               <div class="card card-primary card_element">
-                  <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                  <button class="view-more-btn" onclick="location.href='user_list'">View More <i class="bi bi-arrow-right-short"></i></button>
                   <div class="icon"><i class="bi bi-collection-fill"></i></div>
                   <div class="row">
                     <div class="col-10"><h3>Admin</h3></div>
@@ -171,7 +140,7 @@
     
             <div class="col-md-4 col-lg-4 col-xxl-2">
               <div class="card card-primary card_element">
-                  <button class="view-more-btn">View More <i class="bi bi-arrow-right-short"></i></button>
+                  <button class="view-more-btn" onclick="location.href='user_list'">View More <i class="bi bi-arrow-right-short"></i></button>
                   <div class="icon"><i class="bi bi-collection-fill"></i></div>
                   <div class="row">
                     <div class="col-10"><h3>User</h3></div>

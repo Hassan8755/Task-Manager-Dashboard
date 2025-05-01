@@ -265,7 +265,7 @@ def admin_login():
 def admin_dashboard():
 
     if 'admin' in session:
-     if session["user"]:
+     if session["admin"]:
         
         userId = session.get("user")[0]
         
