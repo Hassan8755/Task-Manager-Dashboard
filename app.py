@@ -28,8 +28,7 @@ class RegisterForm(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
-    # mobile = MobileField('Mobile',validators=[DataRequired()])
-    # confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+   
     submit = SubmitField('user_Register')
 
 class LoginForm(FlaskForm):
