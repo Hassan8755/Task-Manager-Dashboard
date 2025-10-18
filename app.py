@@ -24,19 +24,6 @@ mysql = MySQL(app)
 
 
 
-class RegisterForm(FlaskForm):
-    name = StringField('name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-   
-    submit = SubmitField('user_Register')
-
-class LoginForm(FlaskForm):
-    
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('user_Register')
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -98,17 +85,17 @@ def userLogin():
 
 @app.route('/user_dashboard')
 def user_dashboard():
-    if session["user"]:
+    if "user" in session:
         
         userId = session.get("user")[0]
         
         cursor = mysql.connection.cursor()
         cursor.execute("SELECT count(*) as count  FROM leave_application WHERE user_id=%s and status=%s", (userId,"Rejected"))
-        rejectedCount = cursor.fetchone()[0]
+        rejectedCount = cursor.fetchone()[0] 
        
         cursor.execute("SELECT count(*) as count  FROM leave_application WHERE user_id=%s and status=%s", (userId,"Accepted"))
         acceptedCount = cursor.fetchone()[0]
-        cursor.execute("SELECT count(*) as count  FROM leave_application WHERE user_id=%s ", (userId,))
+        cursor.execute("SELECT count(*) as count  FROM leave_application WHERE user_id=%s", (userId,))
         totalLeavesCount = cursor.fetchone()[0]
 
 
@@ -127,8 +114,8 @@ def user_dashboard():
         cursor.close()
     
     else:
-        flash('Invalid credentials. Please try again.', 'danger')
-        return redirect(url_for('user_login'))
+        # flash('Invalid credentials. Please try again.', 'danger')
+        return redirect(url_for('userLogin'))
 
 
 
@@ -138,11 +125,6 @@ def user_dashboard():
 
 def apply_leave():
 
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT user_id, subject FROM leave_application WHERE status=%s", ('user',))
-    applyList = cursor.fetchall()
-   
-    # cursor = mysql.connection.cursor()
     if request.method == 'POST':
         # user_id = request.form['id']
         subject = request.form['subject']
@@ -163,7 +145,7 @@ def apply_leave():
         cursor.close()
         return redirect(url_for('leave_status'))
 
-    return render_template('user/apply_leave.html',lists=applyList)
+    return render_template('user/apply_leave.html',)
 
     # apply leave code end
 
@@ -239,9 +221,8 @@ def admin_login():
 def admin_dashboard():
 
     if 'admin' in session:
-     if session["admin"]:
         
-        userId = session.get("user")[0]
+        userId = session.get("admin")[0]
         
         cursor = mysql.connection.cursor()
 
@@ -270,13 +251,6 @@ def admin_dashboard():
         adminCount = cursor.fetchone()[0]
 
 
-
-
-
-
-    
-        
-   
         return render_template('admin/admin_dashboard.html',
         task_count=taskCount,completed_task_count=completedTaskCount, pending_task_count=pendingTaskCount,
          accepted_leave_count=acceptedCount, rejected_leave_count = rejectedCount,total_leaves_count = totalLeavesCount,
@@ -314,11 +288,8 @@ def create_task():
         return redirect(url_for('manage_tasks'))
   
     cursor.close()
-    return render_template('admin/create_task.html', users=usersList, name="aman")
+    return render_template('admin/create_task.html', users=usersList,)
 
-# Helper function to find a task by ID
-def find_task(task_id):
-    return next((task for task in tasks if task["id"] == task_id), None)
 
 
 # manage task code start
@@ -326,7 +297,7 @@ def find_task(task_id):
 def manage_tasks():
 
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT task.*,user.name FROM user right join task on task.user_id=user.id order by id desc")
+    cursor.execute("SELECT task.*,user.name FROM user join task on task.user_id=user.id order by id desc")
     taskList = cursor.fetchall()
     cursor.close()
 
@@ -362,9 +333,9 @@ def edit_task():
 
     # delete_task code start
 
-@app.route('/delete_task')
-def delete_task():
-    id = request.args.get('id')
+@app.route('/delete_task/<int:id>', methods=["POST"])
+def delete_task(id):
+    # id = request.args.get('id')
     # new_status = request.args.get('status')
     cursor = mysql.connection.cursor()
     cursor.execute('DELETE FROM task WHERE id = %s', (id,))
@@ -388,9 +359,7 @@ def update_task():
 #start view_leave
 @app.route('/view_leave')
 def view_leave():
-    # cursor.execute("SELECT task.*,user.name FROM user right join task on task.user_id=user.id order by id desc")
     cursor = mysql.connection.cursor()
-    # cursor.execute("SELECT * FROM leave_application order by id desc")
     cursor.execute("SELECT leave_application.*,user.name FROM user right join leave_application on leave_application.user_id=user.id order by id desc")
     applicationList = cursor.fetchall()
     cursor.close()
@@ -425,15 +394,15 @@ def userList():
 
 
 # delete user code start
-@app.route('/delete_user')
-def delete_user():
-    id = request.args.get('id')
+@app.route('/delete_user/<int:id>', methods=['POST'])
+def delete_user(id):
+    # id = request.args.ge('id')
     # new_status = request.args.get('status')
     cursor = mysql.connection.cursor()
     cursor.execute('DELETE FROM user WHERE id = %s', (id,))
     mysql.connection.commit()
     cursor.close()
-    return redirect(url_for('user_list'))
+    return redirect(url_for('userList'))
 
 # delete user  end code
 
@@ -449,10 +418,7 @@ def edit_user():
     if request.method == 'POST':
         name = request.form['name']
         email = request.form['email']
-        # password = request.form['password']
         mobile = request.form['mobile']
-        # priority = request.form['priority']
-        # admin_id = session.get("admin")[0]
 
 
         cursor.execute("update user set name=%s, email=%s, mobile=%s where id =%s",( name, email, mobile,id))
@@ -523,90 +489,6 @@ if  __name__ == '__main__':
 
 
    
-
-# @app.route('/add_task', methods=['POST'])
-# def add_task():
-#     new_id = max(task["id"] for task in tasks) + 1 if tasks else 1
-#     tasks.append({
-#         "id": new_id,
-#         "title": request.form.get('title'),
-#         "description": request.form.get('description'),
-#         "status": "Pending",
-#     })
-#     return redirect(url_for('manage_tasks.html'))
-
-# @app.route('/update_task/<int:task_id>', methods=['POST'])
-# def update_task(task_id):
-#     task = find_task(task_id)
-#     if task:
-#         task["title"] = request.form.get('title')
-#         task["description"] = request.form.get('description')
-#         task["status"] = request.form.get('status')
-#     return redirect(url_for('manage_tasks'))
-
-# @app.route('/delete_task/<int:task_id>')
-# def delete_task(task_id):
-#     global tasks
-#     tasks = [task for task in tasks if task["id"] != task_id]
-#     return redirect(url_for('manage_tasks'))
-
-
-# update password code
-
-# @app.route('/update_password', methods=['GET', 'POST'])
-# def update_password():
-#     if request.method == 'POST':
-#         username = request.form.get('username')
-#         current_password = request.form.get('current_password')
-#         new_password = request.form.get('new_password')
-
-#         user = User.query.filter_by(username=username).first()
-
-#         if not user:
-#             flash("User not found!", "danger")
-#             return redirect(url_for('update_password'))
-
-#         if not check_password_hash(user.password_hash, current_password):
-#             flash("Incorrect current password!", "danger")
-#             return redirect(url_for('update_password'))
-
-#         # Update password
-#         user.password_hash = generate_password_hash(new_password)
-#         db.session.commit()
-#         flash("Password updated successfully!", "success")
-#         return redirect(url_for('update_password'))
-
-#     return render_template('user/update_password.html')
-
-
-# update password end
-
-
-
-
-
-
-
-
-# admin dashboard sidebar code task total
-
-# @app.route('/admin/dashboard')
-# @login_required
-# def admin_dashboard():
-#     total_users = User.query.count()
-#     total_tasks = Task.query.count()
-#     total_leave_applications = LeaveApplication.query.count()
-
-#     return render_template('admin_dashboard.html', 
-#                            total_users=total_users, 
-#                            total_tasks=total_tasks, 
-#                            total_leave_applications=total_leave_applications)
-
-
-
-
-# Run the App
-
 
 
 

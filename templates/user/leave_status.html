@@ -16,7 +16,7 @@
 
         {%for user in leave_status%}
         <tr class="bg-{{ 'success' if user[5] == 'Accepted' else 'danger' if user[5] == 'Rejected' else 'warning' }}">
-            <td>1</td>
+            <td>{{loop.index}}</td>
             <td>{{user[0]}}</td>
             <td>{{user[1]}}</td>
             <td>{{user[2]}}</td>
