@@ -5,8 +5,6 @@ from wtforms.validators import DataRequired,  Email, ValidationError
 import bcrypt
 from flask_mysqldb import MySQL
 
-
-
 app = Flask(__name__)
 
 # MySQL Configuration
